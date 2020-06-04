@@ -1,0 +1,4 @@
+phonemizer 
+wmd
+panphon
+pandas
