@@ -14,16 +14,16 @@ from wmd import WMD
 with open('top-10000.txt') as f:
     english_words = f.read().splitlines()
 
-short_popular_words = [ x for x in english_words[:len(english_words)//8] if len(x) < 5 ]
-# num_phrases = len(english_words) * len(short_popular_words) * 2
-num_phrases = 10000
+short_popular_words = [ x for x in english_words[:len(english_words)//10] if len(x) < 5 ]
+num_phrases = len(english_words) * len(short_popular_words) * 2
+
+print(f"Number of phrases to add: {num_phrases}")
 
 def english_phrases():
-    return english_words
-#    for s in short_popular_words:
-#        for w in english_words:
-#            yield s + ' ' + w
-#            yield w + ' ' + s
+    for s in short_popular_words:
+        for w in english_words:
+            yield s + ' ' + w
+            yield w + ' ' + s
 
 ft = FeatureTable()
 
@@ -61,13 +61,13 @@ if not Path('nbow.p').exists():
     manager = Manager()
     # Create shared dictionary
     nbow = manager.dict()
+    # iterator that adds nbow to arguments of generator_nbow_parallel
+    phrase_nbow_generator = ( (nbow, phrase) for phrase in english_phrases() )
     pool.starmap(
             generate_nbow_parallel,
-            # iterator that adds nbow to arguments of generator_nbow_parallel
-            ( (nbow, phrase) for phrase in english_phrases() )
+            phrase_nbow_generator
             )
-    print(f'Size: {sys.getsizeof(nbow)}')
-    pickle.dump( nbow, open( "nbow.p", "wb" ) )
+    pickle.dump( dict(nbow), open( "nbow.p", "wb" ) )
 else:
     nbow = pickle.load( open( "nbow.p", "rb" ) )
 
