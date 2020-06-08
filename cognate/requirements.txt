@@ -2,3 +2,4 @@ phonemizer
 wmd
 panphon
 pandas
+flask

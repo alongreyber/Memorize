@@ -1,0 +1,15 @@
+Flask
+Flask-httpauth
+Flask-wtf
+Flask-cors
+flask-jwt-extended
+python-dateutil
+huey
+redis
+mongoengine
+flask-mongoengine
+watchdog # Used to restart huey
+pyyaml # watchdog dependency
+argh # Also watchdog dependency
+pytest
+mongolog

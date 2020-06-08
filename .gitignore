@@ -1,3 +1,35 @@
-*.p
-top-10000.txt
+# Python binaries
+__pycache__/
+*.py[cod]
+
+# Vim files
+*.swp
 tags
+
+# Mac Things
+*.DS_Store
+
+# Sass things
+.sass-cache/
+*.css
+*.css.map
+
+# Credentials
+netsuite.ini
+netsuite.prod.ini
+mongo-credentials.ini
+sendgrid.ini
+
+# SSL
+ssl.key
+ssl.pem
+
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+src/_drafts
+package-lock.json

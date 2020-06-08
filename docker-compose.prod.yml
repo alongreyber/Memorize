@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  backend:
+    environment:
+      FLASK_ENV: production
+      NETSUITE_CONFIG: /code/netsuite.prod.ini
+  huey:
+    environment:
+      FLASK_ENV: production
+      NETSUITE_CONFIG: /code/netsuite.prod.ini
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: Dockerfile.prod
+  proxy:
+    build:
+      args:
+        config: prod.conf

@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  backend:
+    environment:
+      FLASK_ENV: development
+      NETSUITE_CONFIG: /code/netsuite.ini
+    volumes:
+      - ./backend:/code
+  huey:
+    environment:
+      FLASK_ENV: development
+      NETSUITE_CONFIG: /code/netsuite.ini
+    volumes:
+      - ./backend:/code
+    command: "watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- huey_consumer --workers 8 app.tasks.huey"
+  frontend:
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+  proxy:
+    build:
+      args:
+        config: dev.conf
