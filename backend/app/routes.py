@@ -89,11 +89,11 @@ def new_user():
     return jsonify({'status' : 'ok'})
 
 ### Make a test user
-#target_user = models.User(
-#        username='alon'
-#        )
-#target_user.set_password('the3Qguy')
-#target_user.save()
+target_user = models.User(
+        username='alon'
+        )
+target_user.set_password('the3Qguy')
+target_user.save()
 
 @bp.route('/user/<target_user_id>/delete')
 @jwt_required
@@ -129,3 +129,27 @@ def set_admin(target_user_id):
                 user=user.to_mongo(),
                 target_user = target_user.to_mongo()))
     return jsonify({'status' : 'ok'})
+
+@bp.route('/sets', methods=['POST'])
+@jwt_required
+def new_set():
+    user_id = get_jwt_identity() 
+    user = models.User.objects(id=user_id).first()
+    if not request.is_json \
+            or 'name' not in request.json \
+            or 'language' not in request.json:
+        return jsonify({'status': 'invalid'})
+    set_new = models.Set(
+            name=request.json['name'],
+            language=request.json['language'])
+    set_new.save()
+    return jsonify(set_new)
+
+@bp.route('/sets')
+@jwt_required
+def get_sets():
+    user_id = get_jwt_identity() 
+    user = models.User.objects(id=user_id).first()
+    sets_serialized = [s.to_mongo() for s in user.sets]
+    return jsonify(sets_serialized)
+

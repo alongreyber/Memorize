@@ -3,24 +3,14 @@ version: '3'
 services:
   backend:
     build: backend/
-    ports:
-      - "5000"
     environment:
       - TZ=America/New_York
-  huey:
-    # Huey needs the same code and packages as the web container (because it runs a lot of the code through import statements)
-    build: backend/
-    volumes:
-      - /dev/shm:/dev/shm
-    command: huey_consumer --workers 8 app.tasks.huey
-    depends_on: 
-      - redis
+  mnemonic:
+    build: mnemonic/
     environment:
       - TZ=America/New_York
   redis:
     image: redis
-    ports:
-      - "6379"
     restart: always
     environment:
       - TZ=America/New_York
@@ -29,8 +19,6 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - TZ=America/New_York
-    ports:
-      - '8080'
   proxy:
     hostname: proxy
     build: proxy/

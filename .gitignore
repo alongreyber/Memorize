@@ -6,6 +6,9 @@ __pycache__/
 *.swp
 tags
 
+# Pickled things
+*.p
+
 # Mac Things
 *.DS_Store
 

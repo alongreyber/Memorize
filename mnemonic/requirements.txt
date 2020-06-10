@@ -3,3 +3,4 @@ wmd
 panphon
 pandas
 flask
+p_tqdm # Progress bar

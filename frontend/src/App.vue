@@ -3,14 +3,14 @@
       <nav v-if="loggedIn" class="navbar is-primary">
 	  <div class="navbar-brand">
 	    <div class="navbar-item has-text-weight-bold">
-		CC Import Utility
+		Memorize App
 	    </div>
 	  </div>
 
 	  <div class="navbar-menu">
 	    <div class="navbar-start">
 		<a class="navbar-item" @click="$router.push('/')">
-		    Home
+		    My Sets
 		</a>
 		<a class="navbar-item" v-if="this.$store.state.user.is_admin" @click="$router.push('/users')">
 		    Users

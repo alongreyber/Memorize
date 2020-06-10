@@ -7,9 +7,7 @@ python-dateutil
 huey
 redis
 mongoengine
+dnspython # Mongoengine dependency
 flask-mongoengine
-watchdog # Used to restart huey
-pyyaml # watchdog dependency
-argh # Also watchdog dependency
 pytest
 mongolog

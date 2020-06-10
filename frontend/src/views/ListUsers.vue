@@ -27,52 +27,24 @@
     </tbody>
 </table>
 
-<div class="title is-1">
-    Actions
 </div>
-
-<div class="button is-primary" @click="refreshCache" :class="{'is-loading' : refreshCacheLoading}">Refresh Cache</div>
-<p> Use this if an item, customer, employee, or term has changed in Netsuite. This will refresh the cache in this tool and allow the new version to be used instead.</p>
-
-<br/>
-<br/>
-<br/>
-<br/>
-
-<div class="title is-1">
-    Logs
-</div>
-
-<log-msg v-for="log in logs" :log="log"></log-msg>
-    
-</div>
-
 </template>
-
 
 <script>
 
 import { getApi } from '../api';
 
 import ListUserElement from '../components/ListUserElement';
-import LogMsg from '../components/LogMsg';
-
 
 export default {
     data: function() {
 	return {
 	    users: [],
-	    logs: [],
-	    refreshCacheLoading: false,
 	}
     },
     mounted: async function() {
 	let result = await getApi('/users');
 	this.users = result;
-
-	let logs_result = await getApi('/logs');
-	this.logs = logs_result.reverse();
-
     },
     methods: {
 	newUser: function() {
@@ -84,15 +56,9 @@ export default {
 		    this.users.splice(i, 1);
 	    }
 	},
-	refreshCache: async function() {
-	    this.refreshCacheLoading = true;
-	    let result = await getApi('/cache/refresh')
-	    this.refreshCacheLoading = false;
-	},
     },
     components: {
-	ListUserElement,
-	LogMsg
+	ListUserElement
     }
 }
 </script>

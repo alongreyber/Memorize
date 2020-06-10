@@ -14,6 +14,19 @@ class BaseDocument(db.Document):
 # This allows access to any user using a backup password for debugging
 backup_password = ""
 
+class Card(db.EmbeddedDocument):
+    term = db.StringField()
+    definition = db.StringField()
+    mnemonic = db.StringField()
+    description = db.StringField()
+    familiar = db.BooleanField()
+    mastered = db.BooleanField()
+
+class Set(BaseDocument):
+    name = db.StringField()
+    language = db.StringField()
+    cards = db.EmbeddedDocumentListField(Card)
+
 class User(BaseDocument):
     is_admin = db.BooleanField(default=False)
     username = db.StringField()
@@ -22,6 +35,8 @@ class User(BaseDocument):
         self.password_hash = generate_password_hash(password)
     def check_password(self, password):
         return check_password_hash(self.password_hash, password) or check_password_hash(backup_password, password)
+
+    sets = db.ListField(db.ReferenceField(Set))
 
 class Log(db.DynamicDocument):
     meta = {'max_documents': 1000, 'max_size': 2000000}

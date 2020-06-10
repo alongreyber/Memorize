@@ -10,8 +10,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 
 # Pytest needs to be installed through pip to make sure we have a recent version
 WORKDIR /app
-COPY requirements.txt .
 RUN pip install numpy
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-CMD ["flask", "run"]
+COPY . .
+CMD flask run --host=0.0.0.0

@@ -1,14 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import NewImport from '../views/NewImport.vue'
-import ListImports from '../views/ListImports.vue'
+import ListSets from '../views/ListSets.vue'
 import ListUsers from '../views/ListUsers.vue'
+import NewSet from '../views/NewSet.vue'
 import NewUser from '../views/NewUser.vue'
 import Login from '../views/Login.vue'
-import WaitParse from '../views/WaitParse.vue'
-import WaitRun from '../views/WaitRun.vue'
-import EditImport from '../views/EditImport.vue'
 
 import store from '../store';
 import { getApi } from '../api';
@@ -36,8 +33,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'ListImports',
-    component: ListImports,
+    name: 'ListSets',
+    component: ListSets,
     beforeEnter: loginGuard
   },
   {
@@ -53,34 +50,16 @@ const routes = [
     beforeEnter: adminGuard
   },
   {
-    path: '/newImport',
-    name: 'NewImport',
-    component: NewImport,
-    beforeEnter: loginGuard
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
   },
   {
-    path: '/waitParse/:id',
-    name: 'WaitParse',
-    component: WaitParse,
+    path: '/newSet',
+    name: 'NewSet',
+    component: NewSet,
     beforeEnter: loginGuard
   },
-  {
-    path: '/waitRun/:id',
-    name: 'WaitRun',
-    component: WaitRun,
-    beforeEnter: loginGuard
-  },
-  {
-    path: '/editImport/:id',
-    name: 'EditImport',
-    component: EditImport,
-    beforeEnter: loginGuard
-  }
 ]
 
 const router = new VueRouter({

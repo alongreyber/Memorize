@@ -1,5 +1,5 @@
 import sys, io, pkgutil
-from multiprocessing import Pool, Manager
+from p_tqdm import p_map
 
 import pickle
 import pandas as pd
@@ -10,16 +10,6 @@ from panphon import FeatureTable
 
 embeddings_name = 'embedding.p'
 nbow_name = 'nbow.p'
-
-# Generator to yield all results that we are going to generate
-def build_phrases(words):
-    short_popular_words = [ x for x in words[:len(words)//20] if len(x) < 5 ]
-    num_phrases = len(words) * len(short_popular_words) * 2
-    print(f"Number of phrases: {num_phrases}")
-    for s in short_popular_words:
-        for w in words:
-            yield s + ' ' + w
-            yield w + ' ' + s
 
 ft = FeatureTable()
 
@@ -39,14 +29,12 @@ def generate_nbow_entry(word, language='en-us'):
     # This array is a list of indicies into the embeddings
     segments_index = [ ipa_list.index(c) for c in segs ]
     # Nbow is in a strange format
-    return (word, segments_index, np.ones(len(segs),dtype=np.float32) )
+    return word, segments_index, np.ones(len(segs),dtype=np.float32)
 
 if __name__ == '__main__':
     # Load top 10,000 english words
     with open('top-10000.txt') as f:
         english_words = f.read().splitlines()
-
-    # Find short words to compose with other words
 
     embeddings_pd = embeddings_pd.drop(['ipa'], axis='columns')
     # Values in the array are not numerical so we use this dict to convert them 
@@ -58,20 +46,10 @@ if __name__ == '__main__':
     # weights_np = np.array(ft.weights, dtype=np.float32)
     # embeddings_np = embeddings_np * weights_np
 
-    print('Generating nbow')
-    def generate_nbow_parallel(shared_dict, word):
-        shared_dict[word] = generate_nbow_entry(word)
-        print(f"Finished {word}")
-    pool = Pool(16)
-    manager = Manager()
-# Create shared dictionary
-    nbow = manager.dict()
-# iterator that adds nbow to arguments of generator_nbow_parallel
-    phrase_nbow_generator = ( (nbow, phrase) for phrase in build_phrases(english_words) )
-    pool.starmap(
-            generate_nbow_parallel,
-            phrase_nbow_generator
-            )
+    print("Generating NBOW")
+    nbow_list = p_map(generate_nbow_entry, english_words)
+    # To make a dictionary, build a new list with the word name as the key
+    nbow = dict( ((nbow[0],nbow) for nbow in nbow_list) )
     print("Finished generating")
     pickle.dump( dict(nbow), open( nbow_name, "wb" ) )
     print(f"Saved to file {nbow_name}")

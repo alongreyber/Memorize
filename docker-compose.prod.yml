@@ -5,10 +5,6 @@ services:
     environment:
       FLASK_ENV: production
       NETSUITE_CONFIG: /code/netsuite.prod.ini
-  huey:
-    environment:
-      FLASK_ENV: production
-      NETSUITE_CONFIG: /code/netsuite.prod.ini
   frontend:
     build:
       context: frontend/

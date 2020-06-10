@@ -1,8 +1,7 @@
-import random, string, json, requests, os
+import random, string, json, os
 
 from flask import Flask, render_template, request, redirect, jsonify, Response, url_for, flash, json
 
-from flask_wtf import FlaskForm
 from flask_jwt_extended import JWTManager
 from wtforms import SubmitField, StringField, RadioField
 from wtforms.validators import DataRequired
