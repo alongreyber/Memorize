@@ -9,13 +9,13 @@
 	<label class="label">
 	    Name
 	</label>
-	<input class="input" type="text" v-model="username" >
+	<input class="input" type="text" v-model="name" >
     </div>
     <div class="control">
 	<label class="label">
 	    Language
 	</label>
-	<multiselect v-model="language_selected" :options="language_list">
+	<multiselect v-model="language_selected" :options="language_list()">
 	</multiselect>
     </div>
 
@@ -34,8 +34,6 @@
 import store from '../store';
 import { postApiJson } from '../api';
 
-import Multiselect from 'vue-multiselect';
-
 export default {
     name: 'NewImport',
     data: function() {
@@ -47,28 +45,28 @@ export default {
 		"French" : "fr-fr",
 		"Korean" : "ko"
 	    },
-	    language_selected: null
+	    language_selected: null,
+	    name: ""
 	}
     },
     methods: {
 	language_list: function() {
-	    return language_map.keys();
+	    return Object.keys(this.language_map);
 	},
 	createSet: async function() {
 	    let language_code = this.language_map[this.language_selected];
 	    let data = { name : this.name, language: language_code };
 	    let result = await postApiJson("/sets", data);
-	    if(result.status == 'ok') {
-		this.$store.commit('displayMessage', {'color' : 'is-success', 'text' : 'Created Set'})
-		this.$router.push("/");
-	    } else {
-		console.log(result.msg)
+	    if(result.status == 'fail') {
+		this.$store.commit('displayMessage',
+		    {'color' : 'is-warning', 'text' : result.data});
+		return;
 	    }
+	    this.$store.commit('displayMessage',
+		{'color' : 'is-success', 'text' : 'Created Set'});
+	    this.$router.push("/");
 	}
-    },
-    components: [
-	Multiselect
-    ]
+    }
 }
 </script>
 

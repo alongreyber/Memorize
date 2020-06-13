@@ -20,6 +20,10 @@ library.add(faCircle)
 library.add(faSync)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
+// Add multiselect
+import Multiselect from 'vue-multiselect';
+Vue.component('multiselect', Multiselect);
+
 // Add bulma
 import 'bulma/css/bulma.css'
 

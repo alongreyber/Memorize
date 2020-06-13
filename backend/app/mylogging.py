@@ -7,8 +7,7 @@ logger = logging.getLogger('app')
 # Send logs to mongodb
 logger.setLevel(logging.DEBUG)
 
-# If flask_env is not present we must be in testing mode
-if 'FLASK_ENV' in os.environ:
+if os.environ['FLASK_ENV'] == 'production':
     logger.addHandler(
             MongoHandler.to(
                 host = mongo_settings[os.environ['FLASK_ENV']]['hostname'],

@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { getApi } from '../api';
-
 export default {
     props: ['name', 'language', 'num_cards', '_id']
 }

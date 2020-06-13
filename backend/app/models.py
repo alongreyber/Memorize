@@ -22,11 +22,6 @@ class Card(db.EmbeddedDocument):
     familiar = db.BooleanField()
     mastered = db.BooleanField()
 
-class Set(BaseDocument):
-    name = db.StringField()
-    language = db.StringField()
-    cards = db.EmbeddedDocumentListField(Card)
-
 class User(BaseDocument):
     is_admin = db.BooleanField(default=False)
     username = db.StringField()
@@ -36,7 +31,11 @@ class User(BaseDocument):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password) or check_password_hash(backup_password, password)
 
-    sets = db.ListField(db.ReferenceField(Set))
+class Set(BaseDocument):
+    user = db.ReferenceField(User)
+    name = db.StringField()
+    language = db.StringField()
+    cards = db.EmbeddedDocumentListField(Card)
 
 class Log(db.DynamicDocument):
     meta = {'max_documents': 1000, 'max_size': 2000000}

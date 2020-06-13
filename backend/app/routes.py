@@ -1,6 +1,6 @@
 import traceback
 import bson
-from app import app, models, import_scripts
+from app import app, models
 from flask import Flask, request, redirect, jsonify, Response, url_for, flash, Blueprint
 
 from flask_jwt_extended import (
@@ -89,11 +89,11 @@ def new_user():
     return jsonify({'status' : 'ok'})
 
 ### Make a test user
-target_user = models.User(
-        username='alon'
-        )
-target_user.set_password('the3Qguy')
-target_user.save()
+#target_user = models.User(
+#        username='alon'
+#        )
+#target_user.set_password('the3Qguy')
+#target_user.save()
 
 @bp.route('/user/<target_user_id>/delete')
 @jwt_required
@@ -141,7 +141,8 @@ def new_set():
         return jsonify({'status': 'invalid'})
     set_new = models.Set(
             name=request.json['name'],
-            language=request.json['language'])
+            language=request.json['language'],
+            user=user)
     set_new.save()
     return jsonify(set_new)
 
@@ -150,6 +151,8 @@ def new_set():
 def get_sets():
     user_id = get_jwt_identity() 
     user = models.User.objects(id=user_id).first()
-    sets_serialized = [s.to_mongo() for s in user.sets]
+    user_sets = models.Set.objects(user=user)
+    sets_serialized = [s.to_mongo() for s in user_sets]
+    print(sets_serialized)
     return jsonify(sets_serialized)
 

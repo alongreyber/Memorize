@@ -44,12 +44,13 @@ export default {
 	}
     },
     mounted: async function() {
-	this.sets = getApi('/sets')
+	let result = await getApi('/sets');
+	this.sets = result;
 	this.loadingImports = false;
     },
     methods: {
-	newImport: function() {
-	    this.$router.push("/newImport");
+	newSet: function() {
+	    this.$router.push("/newSet");
 	},
     },
     components: {

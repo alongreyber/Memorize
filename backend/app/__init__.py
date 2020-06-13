@@ -36,9 +36,9 @@ app.config['MONGODB_SETTINGS'] = {
     'host': mongo_settings[app.config['ENV']]['hostname'],
 }
 
-
 # Change default json encoding to support ObjectID
 from bson import ObjectId
+
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
@@ -57,9 +57,6 @@ app.session_interface = MongoEngineSessionInterface(db)
 from app import mylogging
 
 import tempfile
-
-from app import import_scripts
-from app.tasks import huey
 
 import redis
 r = redis.Redis(host="redis")
