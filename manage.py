@@ -3,7 +3,7 @@ import os
 
 @click.command()
 @click.argument('environment', required=True, type=click.Choice(['dev', 'prod']))
-@click.argument('action', required=True, type=click.Choice(['logs', 'up', 'down', 'ssh', 'sloc', 'test']))
+@click.argument('action', required=True, type=click.Choice(['logs', 'up', 'down', 'ssh', 'sloc', 'test', 'generate']))
 def manage(environment, action):
     # Handle other commands (sloc, ssh)
     if action == 'ssh':
@@ -28,14 +28,15 @@ def manage(environment, action):
     else:
         compose_file = 'docker-compose.dev.yml'
 
+    extra_args = ""
     if action == 'up':
         extra_args = "--build "
         if environment == 'prod':
             extra_args += "--detach"
         else:
             extra_args += "--abort-on-container-exit"
-    else:
-        extra_args = ""
+    if action == 'generate':
+        action = 'run mnemonic python3 generate.py'
     command = f"{host} docker-compose -f docker-compose.yml -f {compose_file} {action} {extra_args}"
     print(command)
     os.system(command)

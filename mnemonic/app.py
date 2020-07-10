@@ -1,20 +1,16 @@
+import pickle
+from pathlib import Path
+
 from flask import Flask, request, jsonify, Blueprint
+from wmd import WMD
+from generate import embeddings_name, nbow_name, generate_nbow_entry
 
 app = Flask(__name__)
+
 bp = Blueprint('api', __name__, template_folder='templates')
-
-import pickle
-
-from pathlib import Path
-from generate import embeddings_name, nbow_name, generate_nbow_entry, generate_files
-from wmd import WMD
-
-if not Path(embeddings_name).exists() or not Path(nbow_name).exists():
-    generate_files()
 
 embeddings = pickle.load( open(embeddings_name, 'rb') )
 nbow = pickle.load( open(nbow_name, 'rb') )
-print("Loaded nbow")
 
 @bp.route('/', methods=['POST'])
 def get_cognate():

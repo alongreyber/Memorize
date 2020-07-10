@@ -31,7 +31,7 @@ def generate_nbow_entry(word, language='en-us'):
     # Nbow is in a strange format
     return word, segments_index, np.ones(len(segs),dtype=np.float32)
 
-def generate_files():
+if __name__ == '__main__':
     # Load top 10,000 english words
     with open('top-10000.txt') as f:
         english_words = f.read().splitlines()
@@ -53,6 +53,3 @@ def generate_files():
     print("Finished generating")
     pickle.dump( dict(nbow), open( nbow_name, "wb" ) )
     print(f"Saved to file {nbow_name}")
-
-if __name__ == '__main__':
-    generate_files()
