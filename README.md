@@ -4,7 +4,7 @@ This is an app designed to help with memorization through mnemonics. The app is 
 
 ## How to Run
 
-The code base comes with a management script that lets you run everything with one command: `python3 manage.py dev up`. This requires click and docker-compose to be installed. Right now only the API works which is separate from the frontend and backend. To use the api you can run a curl command to interact with it. There is currently only one endpoint:
+The code base comes with a management script that lets you run everything with one command: `python3 manage.py dev up`. This requires click and docker-compose to be installed. First run will take a while to generate the feature table and embeddings for the top 10,000 english words. Right now only the API is functional, which is a separate container from the frontend and backend. To use the api you can run a curl command to interact with it. There is currently only one endpoint:
 
 ```
 alon@alon-XPS:~/memorize$ curl -d '{"lang" : "es", "word":"huevos"}' -H "Content-Type: application/json" -X POST http://localhost/api/mnemonic/

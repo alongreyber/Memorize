@@ -6,13 +6,11 @@ bp = Blueprint('api', __name__, template_folder='templates')
 import pickle
 
 from pathlib import Path
-from generate import embeddings_name, nbow_name, generate_nbow_entry
+from generate import embeddings_name, nbow_name, generate_nbow_entry, generate_files
 from wmd import WMD
 
-if not Path(embeddings_name).exists():
-    raise Exception("Embeddings not found")
-if not Path(nbow_name).exists():
-    raise Exception("NBOW not found")
+if not Path(embeddings_name).exists() or not Path(nbow_name).exists():
+    generate_files()
 
 embeddings = pickle.load( open(embeddings_name, 'rb') )
 nbow = pickle.load( open(nbow_name, 'rb') )

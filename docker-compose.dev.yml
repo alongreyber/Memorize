@@ -11,6 +11,10 @@ services:
       - ./frontend:/app
       - /app/node_modules
   proxy:
+    depends_on:
+      - frontend
+      - backend
+      - mnemonic
     build:
       args:
         config: dev.conf
